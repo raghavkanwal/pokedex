@@ -1,3 +1,14 @@
 .pokemon-registry {
   width:100%;
 }
+
+input {
+  width:100%;
+  font-size: x-large;
+  padding:0.2rem;
+}
+
+th {
+  text-align:left;
+  font-size: x-large
+}
