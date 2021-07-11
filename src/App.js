@@ -1,5 +1,4 @@
 import './App.css';
-import pokemonList from './assets/data/pokemon.json';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 
@@ -56,7 +55,14 @@ PokemonInfo.propTypes = {
 
 function App() {
   const [filter, filterSet] = React.useState("");
+  const [pokemon, pokemonSet] = React.useState([]);
   const [selectedPokemon, selectedPokemonSet] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch('http://localhost:3000/pokedex/pokemon.json')
+      .then(response => response.json())
+      .then(data => pokemonSet(data));
+  }, []);
 
   return (
     <div className="app">
@@ -78,7 +84,7 @@ function App() {
             </thead>
             <tbody>
               {
-                pokemonList.filter((pokemon) => pokemon.name.english.toLowerCase().includes(filter.toLowerCase())).map((pokemon) => (
+                pokemon.filter((pokemon) => pokemon.name.english.toLowerCase().includes(filter.toLowerCase())).map((pokemon) => (
                   <PokemonRow pokemon={pokemon} key={pokemon.id} onSelect={(pokemon) => { selectedPokemonSet(pokemon)}}/>
                 ))
               }
