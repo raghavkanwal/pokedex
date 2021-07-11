@@ -20,7 +20,7 @@ const Input = styled.input`
   padding:0.2rem;
 `
 
-const PokemonRow = ({pokemon, onSelect}) => (
+const PokemonRow = ({ pokemon, onSelect }) => (
   <tr>
     <td>{pokemon.name.english}</td>
     <td>{pokemon.type.join(', ')}</td>
@@ -38,77 +38,112 @@ PokemonRow.propTypes = {
   onSelect: PropTypes.func
 }
 
-const PokemonInfo = ({name, base}) => (
+const PokemonInfo = ({ name, base }) => (
   <div>
     <h1>{name.english}</h1>
     <table>
       <tbody>
-      {
-        Object.keys(base).map(key => (
-          <tr key={key}>
-            <td>{key}: </td>
-            <td>{base[key]}</td>
-          </tr>
-        ))
-      }
+        {
+          Object.keys(base).map(key => (
+            <tr key={key}>
+              <td>{key}: </td>
+              <td>{base[key]}</td>
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </div>
 )
 
-PokemonInfo.propTypes = {
-  name: PropTypes.shape({
-    english: PropTypes.string
-  }),
-  base: PropTypes.shape({
-    HP: PropTypes.number.isRequired,
-    Attack: PropTypes.number.isRequired,
-    Defense: PropTypes.number.isRequired,
-    "Sp. Attack": PropTypes.number.isRequired,
-    "Sp. Defense": PropTypes.number.isRequired,
-    Speed: PropTypes.number.isRequired,
+// PokemonInfo.propTypes = {
+//   name: PropTypes.shape({
+//     english: PropTypes.string
+//   }),
+//   base: PropTypes.shape({
+//     HP: PropTypes.number.isRequired,
+//     Attack: PropTypes.number.isRequired,
+//     Defense: PropTypes.number.isRequired,
+//     "Sp. Attack": PropTypes.number.isRequired,
+//     "Sp. Defense": PropTypes.number.isRequired,
+//     Speed: PropTypes.number.isRequired,
 
-  })
-}
+//   })
+// }
 
-function App() {
-  const [filter, filterSet] = React.useState("");
-  const [pokemon, pokemonSet] = React.useState([]);
-  const [selectedPokemon, selectedPokemonSet] = React.useState(null);
+class App extends React.Component {
 
-  React.useEffect(() => {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filter: '',
+      pokemon: [],
+      selectedPokemon: null
+    }
+  }
+
+  componentDidMount() {
     fetch('http://localhost:3000/pokedex/pokemon.json')
-      .then(response => response.json())
-      .then(data => pokemonSet(data));
-  }, []);
+      .then((response) => response.json())
+      .then((pokemon) => (this.setState({
+        ...this.state, 
+        pokemon
+      })))
+  }
 
-  return (
-    <div className="app">
-      <Title>Search Pokemon</Title>  
 
-      <Input type="text" value={filter} onChange={(evt) => filterSet(evt.target.value)} />
+  render() {
+    return (<div className="app">
+      <Title>Search Pokemon</Title>
+
+      <Input type="text" value={this.state.filter} onChange={(evt) => this.setState({
+        ...this.state,
+        filter: evt.target.value
+      })} />
 
       <TwoColumnLayout>
-          <table className="pokemon-registry">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                pokemon.filter((pokemon) => pokemon.name.english.toLowerCase().includes(filter.toLowerCase())).map((pokemon) => (
-                  <PokemonRow pokemon={pokemon} key={pokemon.id} onSelect={(pokemon) => { selectedPokemonSet(pokemon)}}/>
-                ))
-              }
-            </tbody>
-          </table>
-          {selectedPokemon && <PokemonInfo {...selectedPokemon}/>}
+        <table className="pokemon-registry">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              this.state.pokemon.filter((pokemon) => pokemon.name.english.toLowerCase().includes(this.state.filter.toLowerCase())).map((pokemon) => (
+                <PokemonRow pokemon={pokemon} key={pokemon.id} onSelect={(pokemon) => {
+                  this.setState({
+                    ...this.state,
+                    selectedPokemon: pokemon
+                  })
+                }} />
+              ))
+            }
+          </tbody>
+        </table>
+        {this.state.selectedPokemon && <PokemonInfo {...this.state.selectedPokemon} />}
       </TwoColumnLayout>
-      
-    </div>
-  );
+
+    </div>)
+  }
 }
+
+// function App() {
+//   const [filter, filterSet] = React.useState("");
+//   const [pokemon, pokemonSet] = React.useState([]);
+//   const [selectedPokemon, selectedPokemonSet] = React.useState(null);
+
+//   React.useEffect(() => {
+//     fetch('http://localhost:3000/pokedex/pokemon.json')
+//       .then(response => response.json())
+//       .then(data => pokemonSet(data));
+//   }, []);
+
+//   return (
+
+//   );
+// }
 
 export default App;
