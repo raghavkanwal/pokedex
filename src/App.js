@@ -1,12 +1,30 @@
 import './App.css';
 import { PropTypes } from 'prop-types';
 import React from 'react';
+import styled from '@emotion/styled';
+import Button from '@material-ui/core/Button';
+
+const Title = styled.h1`
+  text-align: center;
+`
+
+const TwoColumnLayout = styled.div`
+  display: grid;
+  grid-template-columns: 65% 35%;
+  grid-column-gap: 1rem;
+`
+
+const Input = styled.input`
+  width:100%;
+  font-size: x-large;
+  padding:0.2rem;
+`
 
 const PokemonRow = ({pokemon, onSelect}) => (
   <tr>
     <td>{pokemon.name.english}</td>
     <td>{pokemon.type.join(', ')}</td>
-    <td><button onClick={() => onSelect(pokemon)}>Select</button></td>
+    <td><Button color="primary" variant="contained" onClick={() => onSelect(pokemon)} >Select!</Button></td>
   </tr>
 )
 
@@ -66,15 +84,11 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Search Pokemon</h1>  
+      <Title>Search Pokemon</Title>  
 
-      <input type="text" value={filter} onChange={(evt) => filterSet(evt.target.value)}></input>
+      <Input type="text" value={filter} onChange={(evt) => filterSet(evt.target.value)} />
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns:"60% 40%",
-        gridColumnGap: "1rem"
-      }}>
+      <TwoColumnLayout>
           <table className="pokemon-registry">
             <thead>
               <tr>
@@ -90,9 +104,8 @@ function App() {
               }
             </tbody>
           </table>
-
           {selectedPokemon && <PokemonInfo {...selectedPokemon}/>}
-      </div>
+      </TwoColumnLayout>
       
     </div>
   );
