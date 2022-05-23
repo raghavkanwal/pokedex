@@ -1,0 +1,18 @@
+.Pokecard {
+    text-align: center;
+    width: 25%;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: #EAEAEA;
+    margin: 1%;
+    display: inline-block;
+    font-size: 1rem;
+}
+
+.Pokecard p {
+    font-family: sans-serif;
+}
+
+.Pokecard-image {
+    min-height:96px;
+}

@@ -1,0 +1,9 @@
+.Pokedex {
+    font-size:1rem;
+    text-align: center;
+}
+
+.Pokedex-listing {
+    display:flex;
+    flex-direction: row;
+}
