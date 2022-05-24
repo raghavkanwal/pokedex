@@ -13,8 +13,6 @@ class Pokegame extends Component {
             hand1.add(pokemon[Math.floor(Math.random() * pokemon.length)])
         }
         
-        debugger;
-
         while(hand2.size < 4) {
             hand2.add(pokemon[Math.floor(Math.random() * pokemon.length)])
         }

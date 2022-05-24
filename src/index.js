@@ -23,6 +23,9 @@ const POKEMON = [
         id: 39, name: "Jigglypuff", type: "normal", base_experience: 95
     },
     {
+        id: 94, name: "Gengar", type: "poison", base_experience: 225
+    },
+    {
         id: 133, name: "Eevee", type: "normal", base_experience: 65
     }
 ];
